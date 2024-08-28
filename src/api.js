@@ -6,8 +6,6 @@ app.use(express.json());
 
 const router = express.Router();
 
-//ROTAS
-
 app.use(
   "/",
   router.get("/", (req, res, next) => {
@@ -25,13 +23,6 @@ app.use(
     });
   })
 );
-
-/*app.use('/', router.get('/salas', async (req, res, next) => {
-    const salaController = require("./controllers/salaController");
-    let resp = await salaController.get();
-    res.status(200).send(resp);
-}));
-*/
 
 //entrar conta
 app.use(
