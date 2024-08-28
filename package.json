@@ -13,11 +13,11 @@
     "url": "git+https://github.com/ViniWirth/api-chatFinal.git"
   },
   "keywords": [
-    "api",
     "chat",
-    "mongo",
-    "node",
-    "farchat"
+    "api",
+    "mongodb",
+    "express",
+    "chatinho"
   ],
   "author": "Vinícius Eduardo Baunhart Wirth",
   "license": "ISC",

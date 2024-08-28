@@ -49,7 +49,7 @@ app.use(
       let resp = await salaController.get();
       res.status(200).send(resp);
     } else {
-      res.status(401).send({ msg: "Usuário não autorizado" });
+      res.status(401).send({ msg: "Usuário não autorizado." });
     }
   })
 );
