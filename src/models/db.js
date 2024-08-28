@@ -1,42 +1,52 @@
-const { MongoClient, ObjectId } = require("mongodb");
-require('dotenv').config();
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+require("dotenv").config();
 
 let singleton;
 
-async function connect (){
-    if(singleton) return singleton; 
+async function connect() {
+  if (singleton) return singleton;
 
-    console.log(process.env.DB_HOST)
-    const client = new MongoClient(process.env.DB_HOST);
-    await client.connect();
+  const client = new MongoClient(process.env.DB_HOST, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
+    },
+  });
 
-    singleton = client.db(process.env.DB_DATABASE);
-    return singleton;
+  await client.connect();
+  singleton = client.db(process.env.DB_DATABASE);
+  return singleton;
 }
 
-let findAll = async (collection)=>{
-    const db = await connect();
-    return await db.collection(collection).find().toArray();
-}  
+let findAll = async (collection) => {
+  const db = await connect();
+  return await db.collection(collection).find().toArray();
+};
 
-async function insertOne(collection, objeto){
-    const db = await connect();
-    return db.collection(collection).insertOne(objeto);
+async function insertOne(collection, objeto) {
+  const db = await connect();
+  return db.collection(collection).insertOne(objeto);
 }
 
-let findOne = async (collection, _id)=>{
-    const db = await connect();
-    let obj= await db.collection(collection).find({'_id':new ObjectId(_id)}).toArray();
-    //console.log(obj)
-    if(obj)
-      return obj[0];
-    return false;
-}
-    
-let updateOne= async (collection, object, param)=>{
-    const db = await connect();
-    let result= await db.collection(collection).updateOne(param, { $set: object} );
-    return result;
-}
+let findOne = async (collection, _id) => {
+  const db = await connect();
+  let obj = await db
+    .collection(collection)
+    .find({ _id: new ObjectId(_id) })
+    .toArray();
+  if (obj) return obj[0];
+  return false;
+};
 
-module.exports = {findAll, insertOne, findOne, updateOne};
+let updateOne = async (collection, object, param) => {
+  const db = await connect();
+  let result = await db
+    .collection(collection)
+    .updateOne(param, { $set: object });
+  return result;
+};
+
+module.exports = { findAll, insertOne, findOne, updateOne };

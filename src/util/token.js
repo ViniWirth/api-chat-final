@@ -19,7 +19,6 @@ async function checkToken (token, id, key){
 )};
 
 async function setToken (id, key) {
-    console.log("id: "+id);
     if(id){
         return jwt.sign({id}, key, {expiresIn: 28800});
     }
